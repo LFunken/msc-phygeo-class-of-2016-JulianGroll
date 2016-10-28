@@ -1,0 +1,17 @@
+---
+title: "rs-ws-01-1"
+author: "J. Groll, M. Litzinger, S. Schmid, S. Schwede"
+date: "26 Oktober 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+![hight range](C:\Users/Marius/Documents/Uni/Master/WS_1617/remote_sensing/msc-phygeo-remote-sensing-2016/sonstiges/hight_range.JPG)
+Picture of the hight range of LiDAR raster data. green: low range. red: high range 
+
+calculated by substracting first return raster from last return raster.
+
+![number of returns](C:\Users/Marius/Documents/Uni/Master/WS_1617/remote_sensing/msc-phygeo-remote-sensing-2016/sonstiges/pointcloud.JPG)
+Picture of the number of LiDAR returns. red: high number of returns. green: low number of returns. white: only ground returns.
