@@ -1,0 +1,13 @@
+---
+title: "gi_ws_02_2"
+author: "J. Groll, M. Litzinger, S. Schmidt, S. Schwede"
+date: "7 November 2016"
+output: html_document
+---
+
+
+## R Markdown
+
+This is an R Markdown document containing homework gi_ws_02_2
+
+![flow_chart](D:\Dokumente/Studium/Master_Marburg/Semester_1/Advanced_GIS/gi_ws_02_1/Folie1.JPG)
