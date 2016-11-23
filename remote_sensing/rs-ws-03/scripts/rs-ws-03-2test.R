@@ -1,0 +1,70 @@
+library(raster)
+library(rgdal)
+library(tools)
+
+
+rs_base <- "D:/Dokumente/Studium/Master_Marburg/Semester_1/Remote_Sensing/"
+path_data_rs <- paste0(rs_base, "data/")
+path_original_rs <- paste0(path_data_rs, "original/")
+
+path_aerial_rs <- paste0(path_original_rs, "aerial/")
+path_lidar_rs <- paste0(path_original_rs, "lidar/")
+path_aerial_croped_rs <- paste0(path_data_rs, "aerial_croped/")
+path_temp <- paste0(rs_base, "temp/")
+
+rasterOptions(tmpdir = path_temp)
+
+setwd("D:/Dokumente/Studium/Master_Marburg/Semester_1/Remote_Sensing/data/original/aerial/")
+
+s1 <- stack(paste0(path_aerial_rs, "474000_5632000.tif"))
+
+s2 <- stack(paste0(path_aerial_rs, "474000_5630000.tif"))
+
+s3 <- stack(paste0(path_aerial_rs, "476000_5632000.tif"))
+
+s4 <- stack(paste0(path_aerial_rs, "476000_5630000.tif"))
+
+s5 <- stack(paste0(path_aerial_rs, "478000_5632000.tif"))
+
+s6 <- stack(paste0(path_aerial_rs, "478000_5630000.tif"))
+
+
+aerial_files <- list("474000_5630000.tif", "474000_5632000.tif", "476000_5630000.tif", "476000_5632000.tif", "478000_5630000.tif", "478000_5632000.tif")
+
+ngb_aerials <- function(aerial_files, step = 2000){
+  
+  ngb_files <- lapply(aerial_files, function(test){
+    
+    act_ext <- file_ext(test)
+    fnames <- extent(test)
+    
+    a <- xmin(test)
+    b <- ymin(test)
+    
+    act_file_x <- a
+    act_file_y <- b
+    
+    pot_ngb <- c(paste0(act_file_x, "_", act_file_y + step, ".", act_ext),
+                 paste0(act_file_x + step, "_", act_file_y, ".", act_ext),
+                 paste0(act_file_x, "_", act_file_y - step, ".", act_ext),
+                 paste0(act_file_x - step, "_", act_file_y, ".", act_ext))
+    
+    act_ngb <- sapply(pot_ngb, function(f){
+      pos <- grep(f, fnames)
+      if(length(pos) > 0){
+        return(aerial_files[pos])
+      } else {
+        return(NA)
+      }
+    })
+    return(act_ngb)
+  })
+  
+  names(ngb_files) <- aerial_files
+  return(ngb_files)
+  
+}
+
+neighbours <- ngb_aerials(aerial_files)
+
+neighbours

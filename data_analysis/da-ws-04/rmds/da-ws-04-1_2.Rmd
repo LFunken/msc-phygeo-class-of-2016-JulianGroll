@@ -1,0 +1,19 @@
+---
+title: "da-ws-04-2"
+author: "J. Groll, M. Litzinger, S. Schmidt, S. Schwede"
+date: "14 November 2016"
+output: html_document
+---
+
+## R Markdown
+
+This is an R Markdown document containing homework da-ws-04-2
+
+```{r}
+Feldfruechte <- readRDS("D:/Dokumente/Studium/Master_Marburg/Semester_1/Data_Analysis/da-ws-04-1/fruechte_clean.Rds")
+Gebiete <- readRDS("D:/Dokumente/Studium/Master_Marburg/Semester_1/Data_Analysis/da-ws-04-1/flaeche_clean.Rds")
+
+print(Feldfruechte[1:5,])
+
+print(Gebiete[1:5,])
+```

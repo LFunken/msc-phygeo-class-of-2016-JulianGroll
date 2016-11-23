@@ -1,0 +1,44 @@
+---
+title: "gi_04_2"
+author: "Groll, Litzinger, Schmidt, Schwede"
+date: "15 November 2016"
+output: html_document
+---
+
+
+Sript schreibt keine "Plains"-Datei aus. Da unbekannt ist, durch welche Werte Plains in diesem TIF definiert werden, kann auch keine theoretische Klassifikation für Plateaus und Ebenen beschrieben werden.
+```{r, eval=FALSE}
+saga2_cmd <- "C:/OSGeo4W64/apps/saga/saga_cmd.exe "
+
+dem_files <- list.files("C:/Users/Marius/Documents/Uni/Master/WS_1617/Advanced_GIS/data/dem",
+                        pattern= glob2rx("*.tif"), full.names = TRUE)
+dem_files
+for (i in seq(dem_files)){
+  cmd <- paste0(saga2_cmd,
+                "io_gdal 0 -GRIDS ", dirname(dem_files[i]), "/", basename(dem_files[i]),
+                ".sgrd",
+                " -FILES ", dem_files[i])
+  system(cmd)
+}
+
+dem_files <- list.files("C:/Users/Marius/Documents/Uni/Master/WS_1617/Advanced_GIS/data/dem",
+                        pattern = glob2rx("*.sgrd"), full.names = TRUE)
+
+cmd <- paste0(saga2_cmd,
+              "ta_morphometry 25",
+              " -SLOPE ", dem_files[4],
+              " -MINCURV ", dem_files[2],
+              " -MAXCURV ", dem_file[1],
+              " -PCURV ", dem_files[3],
+              " -TCURV ", dem_files[5],
+              " -PLAIN ", "C:/Users/Marius/Documents/Uni/Master/WS_1617/Advanced_GIS/temp/plain.tif.sgrd",
+              " -SLOPETODEG 0 -T_SLOPE_MIN 5.000000 -T_SLOPE_MAX 15.000000 -T_CURV_MIN
+              0.000002 -T_CURV_MAX 0.000050")
+system(cmd)
+
+cmd <- paste0(saga2_cmd,
+              'io_gdal 1 -GRIDS
+              "" -FORMAT 4 -TYPE
+              0 -FILE "C:/Users/Marius/Documents/Uni/Master/WS_1617/Advanced_GIS/temp/plain.tif.sgrd"')
+system(cmd)
+```

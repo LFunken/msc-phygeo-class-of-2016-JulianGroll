@@ -1,0 +1,54 @@
+---
+title: "da-ws-05-2"
+author: "Groll, Litzinger, Schmidt, Schwede"
+date: "15 November 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(lmtest)
+
+crop <- readRDS("D:/Schwede/data-analysis/da-ws-04-1/fruechte_clean.rds")
+
+head(crop)
+ind <- crop$Winterbarley
+dep <- crop$Winter_wheat
+plot(ind, dep)
+
+
+library(car)
+lmod <- lm(ind ~ dep)
+regLine(lmod, col = "red")
+
+summary(lmod)
+
+ss_obsrv <- sum((lmod$model$dep - mean(lmod$model$dep))**2)
+ss_model <- sum((lmod$fitted.values - mean(lmod$model$dep))**2)
+ss_resid <- sum((lmod$model$dep - lmod$fitted.values)**2)
+
+mss_obsrv <- ss_obsrv / (length(lmod$model$dep) - 1)
+mss_model <- ss_model / 1
+mss_resid <- ss_resid / (length(lmod$model$dep) - 2)
+
+f_value <- mss_model / mss_resid
+f_value
+
+sdt_error <- sqrt(length(lmod$model$dep) * mss_resid / (length(lmod$model$dep) * sum(lmod$model$ind**2) - sum(lmod$model$ind)**2))
+
+lmod$coefficients[2] / sdt_error
+
+anova(lmod)
+bptest(lmod) #If the test is positive (low p value), you should see if any transformation of the dependent variable helps you eliminate heteroscedasticity. Also check if the right hand side of the model is okay.
+coeftest(lmod,vcov=hccm(lmod)) #If bptest does not work, you can use the white's heteroscedasticity-corrected covariance matrices to make inference. Package car has a function hccm that gives you the heteroscedasticity-corrected covariance matrix (there is a similar function in package sandwich also). coeftest(lmod,vcov=hccm(lmod)) will give you the results of the tests using this matrix. Use these results instead of summary(lmod).
+
+bptest(ss_resid)
+coeftest(ss_resid)
+
+```
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
